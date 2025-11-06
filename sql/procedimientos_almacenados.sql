@@ -111,19 +111,19 @@ BEGIN
 	FROM territorio
 	WHERE nombre = p_territorio;
 
-	-- Recuperar id del local
-	SELECT id INTO v_localid
-	FROM local
-	WHERE nombre = p_local 
-		AND clienteid IS NOT DISTINCT FROM v_clienteid
-		AND territorioid = v_territorioid;
-	
 	-- Crear territorio si no existe
 	IF v_territorioid IS NULL THEN
 		INSERT INTO territorio(nombre) VALUES(p_territorio)
 		RETURNING id INTO v_territorioid;
 	END IF;
 
+	-- Recuperar id del local
+	SELECT id INTO v_localid
+	FROM local
+	WHERE nombre = p_local 
+		AND clienteid = v_clienteid
+		AND territorioid = v_territorioid;
+		
 	-- Crear local si no existe
 	IF v_localid IS NULL THEN
 		INSERT INTO local(nombre,clienteid,territorioid) 
@@ -157,15 +157,38 @@ BEGIN
 	FROM categoria
 	WHERE nombre = p_categoria;
 	
+	-- Crear categoria si no existe
+	IF v_categoriaid IS NULL THEN
+		INSERT INTO categoria(nombre) VALUES(p_categoria)
+		RETURNING id INTO v_categoriaid;
+	END IF;
+
 	-- Recuperar id de la marca
 	SELECT id INTO v_marcaid
 	FROM marca
 	WHERE nombre = p_marca;
 
+	-- Crear marca si no existe
+	IF v_marcaid IS NULL THEN
+		INSERT INTO marca(nombre) VALUES(p_marca)
+		RETURNING id INTO v_marcaid;
+	END IF;
+
 	-- Recuperar id de la empresa
 	SELECT id INTO v_empresaid
 	FROM empresa
 	WHERE nombre = p_empresa;
+
+	-- Crear empresa si no existe
+	IF v_empresaid IS NULL THEN
+		INSERT INTO empresa(nombre,escompetidor)
+			VALUES(p_empresa,
+				CASE 
+					WHEN p_empresa = 'Acme' THEN False
+					ELSE True
+				END)
+		RETURNING id INTO v_empresaid;
+	END IF;
 
 	-- Recuperar id del producto
 	SELECT id INTO v_productoid
@@ -178,30 +201,7 @@ BEGIN
 	-- Recuperar id de la relacion empresa_categoria
 	SELECT id INTO v_empresa_categoria_id
 	FROM empresa_categoria
-	WHERE categoriaid = v_categoriaid AND empresaid = v_empresaid;
-	
-	-- Crear categoria si no existe
-	IF v_categoriaid IS NULL THEN
-		INSERT INTO categoria(nombre) VALUES(p_categoria)
-		RETURNING id INTO v_categoriaid;
-	END IF;
-
-	-- Crear marca si no existe
-	IF v_marcaid IS NULL THEN
-		INSERT INTO marca(nombre) VALUES(p_marca)
-		RETURNING id INTO v_marcaid;
-	END IF;
-
-	-- Crear empresa si no existe
-	IF v_empresaid IS NULL THEN
-		INSERT INTO empresa(nombre,escompetidor)
-			VALUES(p_empresa,
-				CASE 
-					WHEN p_empresa = 'Acme' THEN False
-					ELSE True
-				END)
-		RETURNING id INTO v_empresaid;
-	END IF;
+	WHERE categoriaid = v_categoriaid AND empresaid = v_empresaid;				
 
 	-- Crear la relacion empresa_categoria si no existe
 	IF v_empresa_categoria_id IS NULL THEN
@@ -249,6 +249,12 @@ BEGIN
 	FROM marca
 	WHERE nombre = p_marca;
 	
+	-- Crear marca si no existe
+	IF v_marcaid IS NULL THEN
+		INSERT INTO marca(nombre) VALUES(p_marca)
+		RETURNING id INTO v_marcaid;
+	END IF;
+
 	-- Recuperar id del producto
 	SELECT id INTO v_productoid
 	FROM producto
@@ -268,19 +274,13 @@ BEGIN
 	SELECT id INTO v_ventaid
 	FROM venta
 	WHERE fecha = p_fecha
-		AND productoid IS NOT DISTINCT FROM v_productoid
+		AND productoid = v_productoid
 		AND marcaid = v_marcaid
-		AND clienteid IS NOT DISTINCT FROM v_clienteid
-		AND localid IS NOT DISTINCT FROM v_localid
+		AND clienteid = v_clienteid
+		AND localid = v_localid
 		AND preciousd = p_preciousd
 		AND cantidad = p_cantidad
-		AND montousd = p_montousd;
-
-	-- Crear marca si no existe
-	IF v_marcaid IS NULL THEN
-		INSERT INTO marca(nombre) VALUES(p_marca)
-		RETURNING id INTO v_marcaid;
-	END IF;
+		AND montousd = p_montousd;	
 
 	-- Crear venta si no existe
 	IF v_ventaid IS NULL THEN
