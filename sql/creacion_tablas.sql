@@ -68,7 +68,7 @@ CREATE TABLE Local (
     nombre TEXT NOT NULL,
     clienteid INT NOT NULL,
     territorioid INT NOT NULL,    
-    FOREIGN KEY (clienteid) REFERENCES Cliente(id),
+    FOREIGN KEY (clienteid) REFERENCES Cliente(id) ON DELETE CASCADE,
     FOREIGN KEY (territorioid) REFERENCES Territorio(id)
 );
 
@@ -102,6 +102,6 @@ CREATE TABLE Venta (
     montousd DECIMAL(18,2) NOT NULL,    
     FOREIGN KEY (productoid) REFERENCES Producto(id) ON DELETE CASCADE,
     FOREIGN KEY (marcaid) REFERENCES Marca(id),
-    FOREIGN KEY (clienteid) REFERENCES Cliente(id),
+    FOREIGN KEY (clienteid) REFERENCES Cliente(id) ON DELETE CASCADE,
     FOREIGN KEY (localid) REFERENCES Local(id) ON DELETE CASCADE
 );

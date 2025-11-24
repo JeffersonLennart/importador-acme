@@ -65,16 +65,17 @@ BEGIN
 	FROM industria
 	WHERE nombre = p_industria;
 	
-	-- Recuperar id del cliente
-	SELECT id INTO v_clienteid
-	FROM cliente
-	WHERE nombre = p_cliente;	
-
 	-- Crear industria si no existe
 	IF v_industriaid IS NULL THEN
 		INSERT INTO industria(nombre) VALUES(p_industria)
 		RETURNING id INTO v_industriaid;			
 	END IF;
+
+	-- Recuperar id del cliente
+	SELECT id INTO v_clienteid
+	FROM cliente
+	WHERE nombre = p_cliente
+		AND industriaid = v_industriaid;	
 
 	-- Crear cliente si no existe 
 	IF v_clienteid IS NULL THEN
