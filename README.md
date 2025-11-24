@@ -1,4 +1,25 @@
-## Description
+## Project Overview
+ACME is a Peruvian industrial equipment supplier serving clients across different industries. The company sells both its own manufactured products and imported equipment for which it has exclusive distribution rights.
+
+Products are grouped into several categories—such as pumps, valves, generators, and boilers—and ACME competes with other vendors within each segment.
+
+Each client has one or more physical locations (up to five nationwide). These locations are organized into predefined sales territories: North, Central, South, Jungle, Central Highlands, Lima Provinces, and Metropolitan Lima. Every territory is assigned to a salesperson responsible for achieving the annual sales targets.
+
+Because territories may be reassigned at different times of the year, the company needs traceability to determine which salesperson was accountable for sales in each territory at any given month.
+
+ACME has commissioned the creation of a PostgreSQL database to store and manage all related business information and enable data queries for decision-making. The company has provided:
+
+- The list of current sales representatives and their assigned territories
+
+- The list of clients and their locations, including associated territories
+
+- The product catalog and main competitors by category
+
+- Historical product sales for 2022
+
+This database will centralize all operational information and support analytical reporting for strategic sales management.
+
+## System Description
 This is an ETL process project developed in Python that allows importing data from Excel files, transforming them according to business rules, and loading them into a PostgreSQL database.  
 The ETL process is fault-tolerant, meaning it captures internal errors and generates an Excel file containing the problematic records inside the `error` folder for later review.  
 It also validates that no required columns in the Excel files contain `NULL` values.
