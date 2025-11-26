@@ -1,7 +1,7 @@
 ## Project Overview
 ACME is a Peruvian industrial equipment supplier serving clients across different industries. The company sells both its own manufactured products and imported equipment for which it has exclusive distribution rights.
 
-Products are grouped into several categories—such as pumps, valves, generators, and boilers—and ACME competes with other vendors within each segment.
+Products are grouped into several categories such as pumps, valves, generators, and boilers and ACME competes with other vendors within each segment.
 
 Each client has one or more physical locations (up to five nationwide). These locations are organized into predefined sales territories: North, Central, South, Jungle, Central Highlands, Lima Provinces, and Metropolitan Lima. Every territory is assigned to a salesperson responsible for achieving the annual sales targets.
 
@@ -39,7 +39,7 @@ It also validates that no required columns in the Excel files contain `NULL` val
 
 ## Database Configuration
 The SQL scripts are located in the `sql` folder.  
-First, create the `ACME` database, and then run the scripts `creacion_tablas.sql` and `procedimientos_almacenados.sql`.  
+First, create the `acme` database, and then run the scripts `creacion_tablas.sql` and `procedimientos_almacenados.sql`.  
 The connection configuration is defined in the `.env` file, which is explained below.
 
 ## Local Installation and Configuration
@@ -67,8 +67,8 @@ Create a `.env` file in the project root and set the environment variables
 
 ```
 DB_HOST=localhost
-DB_PORT=5433
-DB_NAME=ACME 
+DB_PORT=5432
+DB_NAME=acme
 DB_USER=postgres
 DB_PASSWORD=**YOUR PASSWORD**
 ```
